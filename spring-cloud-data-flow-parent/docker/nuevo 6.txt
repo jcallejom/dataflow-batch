@@ -1,0 +1,41 @@
+Intalacion de servidor spring-data-flow
+https://dataflow.spring.io/docs/installation/local/
+
+
+linux
+wget -O docker-compose.yml https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/main/src/docker-compose/docker-compose.yml;
+wget -O docker-compose-kafka.yml https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/main/src/docker-compose/docker-compose-kafka.yml;
+wget -O docker-compose-postgres.yml https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/main/src/docker-compose/docker-compose-postgres.yml;
+
+wget -O docker-compose-prometheus.yml https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/main/src/docker-compose/docker-compose-prometheus.yml
+docker-compose -f ./docker-compose.yml -f ./docker-compose-prometheus.yml up
+
+
+/mnt/d/dataFlowDocker
+--crear variables
+export HOST_MOUNT_PATH=/mnt/c/Users/javi/.m2
+export METADATA_DEFAULT_DOCKERHUB_USER=jcallejom@yahoo.es
+export METADATA_DEFAULT_DOCKERHUB_PASSWORD=Noirho01
+export DATAFLOW_VERSION=2.10.2
+export SKIPPER_VERSION=2.9.2
+export STREAM_APPS_URI="https://dataflow.spring.io/kafka-docker-latest"
+export TASK_APPS_URI="https://dataflow.spring.io/task-docker-latest"
+
+--
+export STREAM_APPS_URI="https://dataflow.spring.io/kafka-maven-latest"
+export TASK_APPS_URI="https://dataflow.spring.io/task-maven-latest"
+
+docker-compose -f docker-compose.yml -f docker-compose-kafka.yml -f docker-compose-postgres.yml pull
+docker-compose -f docker-compose.yml -f docker-compose-kafka.yml -f docker-compose-postgres.yml up -d
+docker-compose -f docker-compose.yml -f docker-compose-kafka.yml -f docker-compose-postgres.yml down
+
+docker-compose -f docker-compose.yml -f docker-compose-kafka.yml -f docker-compose-postgres.yml --env-file personal.env up -d --build --remove-orphans
+docker-compose -f docker-compose.yml -f docker-compose-kafka.yml -f docker-compose-postgres.yml --env-file ./docker/personal.env up -d --build --remove-orphans
+
+-----La uri tiene que ir específicada como group-id, artifact-id y versión.
+maven://com.refactorizando.example:spring-cloud-stream-source:0.0.1-SNAPSHOT
+maven://com.refactorizando.example:spring-cloud-stream-processor:0.0.1-SNAPSHOT
+maven://com.refactorizando.example:spring-cloud-stream-sink:0.0.1-SNAPSHOT
+
+maven://com.refactorizando.example:batch-processing:0.0.1-SNAPSHOT
+spring-cloud-stream-processor
